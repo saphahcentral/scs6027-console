@@ -2,27 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ticket Follow-Ups - SCS6027 Console</title>
-  <link rel="stylesheet" href="style-internal.css">
+  <link rel="stylesheet" href="https://saphahcentral.github.io/saphahcentral/style-internal.css">
   <script src="include.js" defer></script>
   <script src="followups.js" defer></script>
 </head>
 <body>
+  <!-- Dynamic Header -->
   <div data-include="header.html"></div>
+
+  <!-- Dynamic Navigation -->
   <div data-include="nav.html"></div>
 
-  <main>
+  <main class="wrap">
     <h1>Ticket Follow-Ups</h1>
+
     <form id="followup-form">
-      <label>Ticket ID: <input type="text" id="followup-ticket-id" required></label><br>
-      <label>Update:<br><textarea id="followup-text" required></textarea></label><br>
-      <button type="submit">Add Follow-Up</button>
+      <div class="grid">
+        <label>Ticket ID: <input type="text" id="followup-ticket-id" required></label>
+      </div>
+      <div class="grid">
+        <label>Update:<br>
+          <textarea id="followup-text" required></textarea>
+        </label>
+      </div>
+      <button type="submit" class="btn">Add Follow-Up</button>
     </form>
 
     <h2>Follow-Up Log</h2>
     <ul id="followup-list"></ul>
   </main>
 
+  <!-- Dynamic Footer -->
   <div data-include="footer.html"></div>
 </body>
 </html>
