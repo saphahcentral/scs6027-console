@@ -6,35 +6,90 @@
   <title>Ticket Follow-Ups - SCS6027 Console</title>
   <link rel="stylesheet" href="https://saphahcentral.github.io/saphahcentral/style-internal.css">
   <script src="include.js" defer></script>
-  <script src="followups.js" defer></script>
 </head>
 <body>
-  <!-- Dynamic Header -->
   <div data-include="header.html"></div>
-
-  <!-- Dynamic Navigation -->
   <div data-include="nav.html"></div>
 
-  <main class="wrap">
+  <main>
     <h1>Ticket Follow-Ups</h1>
 
     <form id="followup-form">
-      <div class="grid">
-        <label>Ticket ID: <input type="text" id="followup-ticket-id" required></label>
-      </div>
-      <div class="grid">
-        <label>Update:<br>
-          <textarea id="followup-text" required></textarea>
-        </label>
-      </div>
-      <button type="submit" class="btn">Add Follow-Up</button>
+      <label>Ticket ID:<br>
+        <input type="text" id="followup-ticket-id" required>
+      </label><br><br>
+
+      <label>Update:<br>
+        <textarea id="followup-text" required></textarea>
+      </label><br><br>
+
+      <button type="submit">Add Follow-Up</button>
     </form>
 
     <h2>Follow-Up Log</h2>
     <ul id="followup-list"></ul>
   </main>
 
-  <!-- Dynamic Footer -->
   <div data-include="footer.html"></div>
+
+  <script>
+    const form = document.getElementById("followup-form");
+    const ticketInput = document.getElementById("followup-ticket-id");
+    const textInput = document.getElementById("followup-text");
+    const followupList = document.getElementById("followup-list");
+
+    // Fetch follow-ups for a ticket
+    async function loadFollowups(ticketId) {
+      followupList.innerHTML = "";
+      if (!ticketId) return;
+
+      try {
+        const res = await fetch(`/api/followups/${ticketId}`);
+        const data = await res.json();
+        if (data.length === 0) {
+          followupList.innerHTML = "<li>No follow-ups yet.</li>";
+        } else {
+          data.forEach(f => {
+            const li = document.createElement("li");
+            li.textContent = `[${new Date(f.timestamp).toLocaleString()}] ${f.author}: ${f.message}`;
+            followupList.appendChild(li);
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        followupList.innerHTML = "<li>Error loading follow-ups.</li>";
+      }
+    }
+
+    // Handle form submission
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      const ticketId = ticketInput.value.trim();
+      const message = textInput.value.trim();
+      if (!ticketId || !message) return;
+
+      try {
+        const res = await fetch("/api/followups", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ticketId, message })
+        });
+        const newFollowup = await res.json();
+        ticketInput.value = "";
+        textInput.value = "";
+        loadFollowups(ticketId);
+        alert("✅ Follow-up added successfully.");
+      } catch (err) {
+        console.error(err);
+        alert("❌ Failed to add follow-up.");
+      }
+    });
+
+    // Reload follow-ups when ticket ID changes
+    ticketInput.addEventListener("blur", () => {
+      const ticketId = ticketInput.value.trim();
+      if (ticketId) loadFollowups(ticketId);
+    });
+  </script>
 </body>
 </html>
