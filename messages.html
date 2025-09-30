@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Internal Messaging - SCS6027 Console</title>
+  <link rel="stylesheet" href="style-internal.css">
+  <script src="include.js" defer></script>
+  <script src="messages.js" defer></script>
+</head>
+<body>
+  <div data-include="header.html"></div>
+  <div data-include="nav.html"></div>
+
+  <main>
+    <h1>Internal Messaging</h1>
+    <form id="message-form">
+      <label>Recipient: <input type="text" id="message-recipient" required></label><br>
+      <label>Message:<br><textarea id="message-text" required></textarea></label><br>
+      <button type="submit">Send Message</button>
+    </form>
+
+    <h2>Message Log</h2>
+    <ul id="message-list"></ul>
+  </main>
+
+  <div data-include="footer.html"></div>
+</body>
+</html>
