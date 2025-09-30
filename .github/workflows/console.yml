@@ -1,0 +1,33 @@
+name: SCS6027 Console Auto-Commit
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *" # hourly check
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure Git
+        run: |
+          git config --local user.name "GitHub Action"
+          git config --local user.email "actions@github.com"
+
+      - name: Commit DATA changes
+        run: |
+          if [ -n "$(git status --porcelain DATA)" ]; then
+            git add DATA/*
+            git commit -m "Auto-commit: update DATA [skip ci]"
+            git push
+          else
+            echo "✅ No DATA changes to commit."
+          fi
