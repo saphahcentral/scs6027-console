@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Internal Messaging - SCS6027 Console</title>
-  <link rel="stylesheet" href="style-internal.css">
+  <link rel="stylesheet" href="https://saphahcentral.github.io/saphahcentral/style-internal.css">
   <script src="include.js" defer></script>
   <script src="messages.js" defer></script>
 </head>
@@ -11,12 +12,21 @@
   <div data-include="header.html"></div>
   <div data-include="nav.html"></div>
 
-  <main>
+  <main class="wrap">
     <h1>Internal Messaging</h1>
+
     <form id="message-form">
-      <label>Recipient: <input type="text" id="message-recipient" required></label><br>
-      <label>Message:<br><textarea id="message-text" required></textarea></label><br>
-      <button type="submit">Send Message</button>
+      <label>
+        Recipient:
+        <input type="text" id="message-recipient" required placeholder="Enter recipient">
+      </label>
+      <br>
+      <label>
+        Message:<br>
+        <textarea id="message-text" required placeholder="Type your message"></textarea>
+      </label>
+      <br>
+      <button type="submit" class="btn">Send Message</button>
     </form>
 
     <h2>Message Log</h2>
