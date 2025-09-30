@@ -21,8 +21,15 @@ if (fs.existsSync(STUDENTS_FILE)) {
   }
 }
 
-// Add a student
+/**
+ * Add a new student
+ * @param {string} name 
+ * @param {string} email 
+ * @returns {object} new student entry
+ */
 function addStudent(name, email) {
+  if (!name.trim() || !email.trim()) throw new Error("Name and Email are required");
+
   const newStudent = {
     id: students.length + 1,
     name,
@@ -31,22 +38,33 @@ function addStudent(name, email) {
   };
   students.push(newStudent);
   saveStudents();
+  commitStudents();  // optional auto-commit
   console.log("✅ Student added:", newStudent);
-  commitStudents();
   return newStudent;
 }
 
-// List all students
+/**
+ * List all students
+ * @returns {Array} students
+ */
 function listStudents() {
   return students;
 }
 
-// Save students to file
+/**
+ * Save students to file
+ */
 function saveStudents() {
-  fs.writeFileSync(STUDENTS_FILE, JSON.stringify(students, null, 2), "utf-8");
+  try {
+    fs.writeFileSync(STUDENTS_FILE, JSON.stringify(students, null, 2), "utf-8");
+  } catch (err) {
+    console.error("Failed to save students.json:", err);
+  }
 }
 
-// Commit students to GitHub
+/**
+ * Commit students.json to GitHub (optional, no-fail if no changes)
+ */
 function commitStudents() {
   try {
     execSync('git config --local user.name "GitHub Action"');
@@ -56,9 +74,9 @@ function commitStudents() {
     execSync("git push origin main");
     console.log("✅ Students committed to repository.");
   } catch (err) {
-    console.error("⚠️ Git commit failed (likely no changes):", err.message);
+    console.warn("⚠️ Git commit skipped (likely no changes).", err.message);
   }
 }
 
-// Export functions
+// Export functions for usage in console or other services
 module.exports = { addStudent, listStudents };
