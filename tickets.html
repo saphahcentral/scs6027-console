@@ -3,9 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <title>Ticket Management - SCS6027 Console</title>
-  <link rel="stylesheet" href="style-internal.css">
+  <link rel="stylesheet" href="https://saphahcentral.github.io/saphahcentral/style-internal.css">
   <script src="include.js" defer></script>
-  <script src="tickets.js" defer></script>
+  <script type="module" defer>
+    import { load, create, addReply } from './tickets.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const form = document.getElementById('ticket-form');
+      const listEl = document.getElementById('ticket-list');
+
+      // Function to refresh ticket list
+      async function renderList() {
+        const tickets = await load();
+        listEl.innerHTML = '';
+        if (tickets.length === 0) {
+          listEl.innerHTML = '<li>No tickets available.</li>';
+          return;
+        }
+        tickets.forEach(t => {
+          const li = document.createElement('li');
+          li.innerHTML = `<strong>${t.id}. ${t.subject}</strong> (${t.status})<br>${t.body}<br>${t.email || ''}`;
+          if (t.replies && t.replies.length) {
+            const ulReplies = document.createElement('ul');
+            t.replies.forEach(r => {
+              const rli = document.createElement('li');
+              rli.textContent = `${r.text} (${r.when || ''})`;
+              ulReplies.appendChild(rli);
+            });
+            li.appendChild(ulReplies);
+          }
+          listEl.appendChild(li);
+        });
+      }
+
+      // Initial render
+      await renderList();
+
+      // Form submit handler
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const subject = document.getElementById('ticket-title').value.trim();
+        const body = document.getElementById('ticket-desc').value.trim();
+        if (!subject || !body) return alert('Both title and description are required.');
+        try {
+          await create({ subject, body });
+          form.reset();
+          await renderList();
+        } catch (err) {
+          console.error(err);
+          alert('Error creating ticket: ' + err.message);
+        }
+      });
+    });
+  </script>
 </head>
 <body>
   <div data-include="header.html"></div>
