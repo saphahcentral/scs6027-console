@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SCS6027 Console - Admin</title>
+
+  <style>
+    /* Retro console styling */
+    :root{
+      --bg:#000; --fg:#33ff66; --accent:#7fffd4; --muted:#999;
+      font-family: "Lucida Console", Monaco, monospace;
+    }
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--fg)}
+    .wrap{max-width:1000px;margin:18px auto;padding:16px;}
+    header{display:flex;align-items:center;gap:12px}
+    header h1{margin:0;font-size:1.25rem;color:var(--fg)}
+    .console{
+      background:#020202;border:1px solid #0b3;box-shadow:0 6px 18px rgba(0,0,0,.6);
+      padding:14px;border-radius:6px;height:65vh;overflow:auto;
+    }
+    .line{white-space:pre-wrap;margin:6px 0}
+    .prompt{color:var(--accent)}
+    .controls{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .btn{
+      background:#071; color:#001; border:0; padding:8px 10px;border-radius:6px;
+      font-family:inherit; cursor:pointer;
+    }
+    .btn.secondary{background:#222;color:var(--fg);border:1px solid #333}
+    .small{font-size:0.85rem;color:var(--muted)}
+    input[type="text"], input[type="password"], textarea {
+      background:#000;color:var(--fg);border:1px solid #0b3;padding:6px;border-radius:4px;
+      font-family:inherit;
+    }
+    .info {margin-top:8px;color:var(--muted);font-size:0.9rem}
+    .grid{display:flex;gap:10px;align-items:center}
+    .col{display:flex;gap:8px;align-items:center}
+    .fileimport{display:none}
+    footer{margin-top:12px;color:var(--muted);font-size:13px;text-align:center}
+    a.link{color:var(--accent)}
+    @media(max-width:600px){ .wrap{padding:10px} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img alt="Console" src="https://cdn-icons-png.flaticon.com/512/1161/1161406.png" width="40" height="40" style="filter:invert(0.9)"/>
+      <h1>SCS6027 - Admin Console</h1>
+      <div style="margin-left:auto" class="small">Retro admin console • internal use</div>
+    </header>
+
+    <div class="console" id="terminal" aria-live="polite"></div>
+
+    <div class="controls">
+      <div class="grid">
+        <input id="cmdInput" type="text" placeholder="enter command (type 'help')" style="width:420px"/>
+        <button id="runBtn" class="btn">Run</button>
+      </div>
+
+      <div class="col">
+        <button id="loginBtn" class="btn secondary">Login</button>
+        <input id="adminPass" type="password" placeholder="admin password" />
+      </div>
+
+      <div class="col">
+        <label class="small">Import JSON: <input id="fileImport" class="fileimport" type="file" accept=".json"/></label>
+        <button id="exportTickets" class="btn secondary">Export Tickets</button>
+        <button id="exportMessages" class="btn secondary">Export Messages</button>
+      </div>
+
+      <div class="col">
+        <button id="commitRemote" class="btn">Commit to GitHub (optional)</button>
+      </div>
+    </div>
+
+    <div class="info">
+      Commands: <code>help</code>, <code>view tickets</code>, <code>view ticket &lt;id&gt;</code>, <code>reply &lt;id&gt; "message"</code>, <code>newticket "subject" "body" "email"</code>, <code>list messages</code>, <code>post "message"</code>, <code>export tickets</code>, <code>export messages</code>
+    </div>
+
+    <footer>Data stored in <code>/data</code> (read from repo). Changes are local until you export or commit to the repository.</footer>
+  </div>
+
+  <script type="module" src="./console.js"></script>
+</body>
+</html>
