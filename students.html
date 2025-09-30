@@ -3,9 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <title>Student Management - SCS6027 Console</title>
-  <link rel="stylesheet" href="style-internal.css">
+  <link rel="stylesheet" href="https://saphahcentral.github.io/saphahcentral/style-internal.css">
   <script src="include.js" defer></script>
-  <script src="students.js" defer></script>
+  <script type="module" defer>
+    import { addStudent, listStudents } from './students.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const form = document.getElementById('student-form');
+      const listEl = document.getElementById('student-list');
+
+      // Function to refresh student list
+      function renderList() {
+        const students = listStudents();
+        listEl.innerHTML = '';
+        if (students.length === 0) {
+          listEl.innerHTML = '<li>No students registered yet.</li>';
+        } else {
+          students.forEach(s => {
+            const li = document.createElement('li');
+            li.textContent = `${s.id}. ${s.name} (${s.email})`;
+            listEl.appendChild(li);
+          });
+        }
+      }
+
+      // Initial render
+      renderList();
+
+      // Form submit handler
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const name = document.getElementById('student-name').value.trim();
+        const email = document.getElementById('student-email').value.trim();
+        if (!name || !email) return alert('Both name and email are required.');
+        try {
+          addStudent(name, email);
+          renderList();
+          form.reset();
+        } catch (err) {
+          console.error(err);
+          alert('Error adding student: ' + err.message);
+        }
+      });
+    });
+  </script>
 </head>
 <body>
   <div data-include="header.html"></div>
