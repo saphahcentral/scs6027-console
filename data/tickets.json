@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "subject": "Example: Unable to login",
+    "body": "I cannot log into my account since yesterday.",
+    "email": "user@example.com",
+    "status": "open",
+    "created": "2025-09-29T08:00:00Z",
+    "replies": []
+  },
+  {
+    "id": 2,
+    "subject": "Example: Page load error",
+    "body": "The dashboard shows a 500 on submit.",
+    "email": "reporter@example.com",
+    "status": "open",
+    "created": "2025-09-28T12:30:00Z",
+    "replies": []
+  }
+]
