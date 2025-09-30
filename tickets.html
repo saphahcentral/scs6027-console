@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ticket Management - SCS6027 Console</title>
+  <link rel="stylesheet" href="style-internal.css">
+  <script src="include.js" defer></script>
+  <script src="tickets.js" defer></script>
+</head>
+<body>
+  <div data-include="header.html"></div>
+  <div data-include="nav.html"></div>
+
+  <main>
+    <h1>Ticket Management</h1>
+    <form id="ticket-form">
+      <label>Title: <input type="text" id="ticket-title" required></label><br>
+      <label>Description:<br><textarea id="ticket-desc" required></textarea></label><br>
+      <button type="submit">Create Ticket</button>
+    </form>
+
+    <h2>Open Tickets</h2>
+    <ul id="ticket-list"></ul>
+  </main>
+
+  <div data-include="footer.html"></div>
+</body>
+</html>
